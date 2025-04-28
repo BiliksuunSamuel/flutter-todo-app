@@ -9,6 +9,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      automaticallyImplyLeading: false,
       title: Container(
         padding: EdgeInsets.symmetric(horizontal: 0),
         child: Row(
