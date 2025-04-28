@@ -23,7 +23,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   void handleLoadData() {
     //delay for 2 seconds
     Future.delayed(const Duration(seconds: 2), () {
-      Get.off(() => HomeScreen());
+      Get.offAll(() => HomeScreen());
     });
   }
 
