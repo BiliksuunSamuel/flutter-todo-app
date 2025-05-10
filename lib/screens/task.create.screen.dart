@@ -1,10 +1,13 @@
-import 'package:bloc_todo/components/custom.datetime.picker.dart';
 import 'package:bloc_todo/components/custom.input.dart';
 import 'package:bloc_todo/components/custom.time.picker.dart';
 import 'package:bloc_todo/components/primary.button.dart';
 import 'package:bloc_todo/theme/app.colors.dart';
+import 'package:bloc_todo/theme/app.font.size.dart';
+import 'package:bloc_todo/utils/utilities.dart';
 import 'package:bloc_todo/views/app.view.dart';
 import 'package:flutter/material.dart';
+
+import '../components/custom.date.picker.dart';
 
 class TaskCreateScreen extends StatefulWidget {
   const TaskCreateScreen({super.key});
@@ -14,6 +17,9 @@ class TaskCreateScreen extends StatefulWidget {
 }
 
 class _TaskCreateScreenState extends State<TaskCreateScreen> {
+  var dateController = TextEditingController();
+  String? selectedTime;
+  String? selectedDate;
   @override
   Widget build(BuildContext context) {
     return AppView(
@@ -73,9 +79,18 @@ class _TaskCreateScreenState extends State<TaskCreateScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Expanded(
-                            child: CustomDateTimePicker(
+                            child: CustomDatePicker(
                               label: "Date",
-                              suffixIcon: Icon(Icons.calendar_month),
+                              handleChange: (date) {
+                                if (date != null) {
+                                  setState(() {
+                                    selectedDate =
+                                        "${date.day}/${date.month}/${date.year}";
+                                  });
+                                }
+                              },
+                              hintText: "Select date",
+                              value: selectedDate,
                             ),
                           ),
                           SizedBox(width: 10),
@@ -83,7 +98,15 @@ class _TaskCreateScreenState extends State<TaskCreateScreen> {
                             child: CustomTimePicker(
                               label: "Time",
                               hintText: "Select time",
-                              suffixIcon: Icon(Icons.access_time),
+                              value: selectedTime,
+                              handleChange: (time) {
+                                //Print the selected time
+                                if (time != null) {
+                                  setState(() {
+                                    selectedTime = time.toFormattedString();
+                                  });
+                                }
+                              },
                             ),
                           ),
                         ],
@@ -94,6 +117,11 @@ class _TaskCreateScreenState extends State<TaskCreateScreen> {
                         onPressed: () {
                           print("Task Created");
                         },
+                      ),
+                      SizedBox(height: 20),
+                      Text(
+                        dateController.text,
+                        style: AppFontSize.fontSizeMedium(),
                       ),
                     ],
                   ),

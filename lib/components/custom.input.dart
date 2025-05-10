@@ -1,4 +1,7 @@
+import 'package:bloc_todo/utils/dimensions.dart';
 import 'package:flutter/material.dart';
+
+import '../theme/app.colors.dart';
 
 class CustomInput extends StatelessWidget {
   final TextEditingController? controller;
@@ -49,6 +52,24 @@ class CustomInput extends StatelessWidget {
             decoration: InputDecoration(
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(10)),
+                borderSide: BorderSide(
+                  color: Colors.grey.shade800,
+                  width: 0.35,
+                ),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  width: Dimensions.getWidth(0.35),
+                  color: Colors.grey.shade800,
+                ),
+                borderRadius: BorderRadius.circular(Dimensions.getWidth(10)),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  width: Dimensions.getWidth(0.85),
+                  color: AppColors.primaryColor,
+                ),
+                borderRadius: BorderRadius.circular(Dimensions.getWidth(10)),
               ),
               hintText: hintText,
             ),

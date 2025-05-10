@@ -1,4 +1,6 @@
 //extension on int to get the month name
+import 'package:flutter/material.dart';
+
 extension MonthName on int {
   String get monthName {
     switch (this) {
@@ -53,5 +55,17 @@ extension DayOfWeekShortName on int {
       default:
         return "";
     }
+  }
+}
+
+//extension on TimeOfDay? to output hh:mm a
+extension TimeOfDayExtension on TimeOfDay? {
+  String toFormattedString() {
+    if (this == null) return "";
+    final hour = this!.hour;
+    final minute = this!.minute;
+    final period = hour >= 12 ? 'PM' : 'AM';
+    final formattedHour = hour % 12 == 0 ? 12 : hour % 12;
+    return '$formattedHour:${minute.toString().padLeft(2, '0')} $period';
   }
 }

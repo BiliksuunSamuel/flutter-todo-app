@@ -1,51 +1,20 @@
+import 'package:bloc_todo/theme/app.colors.dart';
+import 'package:bloc_todo/utils/dimensions.dart';
 import 'package:flutter/material.dart';
 
-import '../utils/dimensions.dart';
-
-class CustomTimePicker extends StatelessWidget {
+class CustomDatePicker extends StatelessWidget {
   final String? label;
   final String? hintText;
-  final Function(TimeOfDay? time)? handleChange;
+  final Function(DateTime? dt)? handleChange;
   final String? value;
 
-  const CustomTimePicker({
+  const CustomDatePicker({
     super.key,
     this.label,
     this.hintText,
     this.handleChange,
     this.value,
   });
-
-  Future<void> _selectTime(BuildContext context) async {
-    final TimeOfDay? pickedTime = await showTimePicker(
-      context: context,
-      initialTime: TimeOfDay.now(),
-      builder: (BuildContext context, Widget? child) {
-        return Theme(
-          data: ThemeData.light().copyWith(
-            colorScheme: const ColorScheme.light(
-              primary: Colors.purple, // your desired primary color
-              onPrimary: Colors.white,
-              surface: Colors.white,
-              onSurface: Colors.black,
-            ),
-            timePickerTheme: const TimePickerThemeData(
-              backgroundColor: Colors.white,
-              hourMinuteTextColor: Colors.black,
-              dialHandColor: Colors.purple,
-            ),
-          ),
-          child: child!,
-        );
-      },
-    );
-
-    if (pickedTime != null) {
-      if (handleChange != null) {
-        handleChange!(pickedTime);
-      }
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,17 +24,41 @@ class CustomTimePicker extends StatelessWidget {
         if (label != null)
           Text(
             label!,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
               color: Colors.black,
             ),
           ),
-        if (label != null) const SizedBox(height: 8),
+        if (label != null) SizedBox(height: 8),
         GestureDetector(
-          onTap: () {
-            _selectTime(context);
+          onTap: () async {
+            final date = await showDatePicker(
+              context: context,
+              initialDate: DateTime.now(),
+              firstDate: DateTime(2000),
+              lastDate: DateTime(2100),
+              builder: (context, child) {
+                return Theme(
+                  data: ThemeData.light().copyWith(
+                    colorScheme: ColorScheme.light(
+                      primary:
+                          AppColors.primaryColor, // change to match your theme
+                      onPrimary: Colors.white,
+                      surface: Colors.white,
+                      onSurface: Colors.black,
+                    ),
+                    dialogTheme: DialogThemeData(backgroundColor: Colors.white),
+                  ),
+                  child: child!,
+                );
+              },
+            );
+            if (date != null) {
+              handleChange?.call(date);
+            }
           },
+
           child: Container(
             width: double.infinity,
             height: Dimensions.getHeight(48),
@@ -82,14 +75,14 @@ class CustomTimePicker extends StatelessWidget {
               children: [
                 Expanded(
                   child: Text(
-                    value ?? "12:00 AM",
+                    value ?? "2025-01-01",
                     style: TextStyle(
                       fontSize: Dimensions.getFontSize(18),
                       color: Colors.black,
                     ), // test with direct style
                   ),
                 ),
-                Icon(Icons.access_time, color: Colors.grey.shade900),
+                Icon(Icons.calendar_month, color: Colors.grey.shade900),
               ],
             ),
           ),
